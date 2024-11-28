@@ -18,6 +18,14 @@ matrix = [
 def stop_game(matrix):
     return all('-' not in el for el in matrix)
 
+def input_data(per_size, per_size_view, type_x_o = 'horizontal'):
+    while True:
+        value = input(f'Введите координату { "горизонтали" if type_x_o == "horizontal" else "вертикали"} [{per_size_view}]:')
+        if value not in per_size:
+            print('Ошибка ввода')
+        else:
+            return value
+
 def print_matrix(matrix):
     print(' '.join(f'  {i}' if i == 0 else str(i) for i in range(len(matrix))))
     i = 0
@@ -29,7 +37,7 @@ def check_matrix(matrix, value):
     for row in matrix:
         if all(value == el for el in row): 
             return True
-    for row in [list(row) for row in zip(*matrix)]: #транспонирование матрицы чтобы работать через итераторы, возможно лучше было 2 цикла и if с индексами
+    for row in zip(*matrix): #транспонирование матрицы чтобы работать через итераторы, возможно лучше было 2 цикла и if с индексами
         if all(value == el for el in row): 
             return True
 #    for i in range(len(matrix)):
@@ -56,21 +64,9 @@ while not per_check and not stop_game(matrix):
     print(f'Сейчас ходит игрок {switch_x_o}')
 
     while True:
-        while True:
-            x = None
-            x = input(f'Введите координату горизонтали [{per_size_view}]:')
-            if x not in per_size:
-                print('Ошибка ввода')
-            else:
-                break
-    
-        while True:
-            y = None
-            y = input(f'Введите координату вертикали [{per_size_view}]:')
-            if y not in per_size:
-                print('Ошибка ввода')
-            else:
-                break
+        
+        x = input_data(per_size, per_size_view)
+        y = input_data(per_size, per_size_view, 'vertical')
 
         if matrix[int(y)][int(x)] == '-':
             matrix[int(y)][int(x)] = switch_x_o
